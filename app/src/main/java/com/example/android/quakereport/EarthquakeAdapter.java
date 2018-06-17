@@ -77,22 +77,22 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // Find the eathquake's primaryLocation TextView by it's ID earthquake_primary_location
         TextView primaryLocation = (TextView) listItemView.findViewById(R.id.earthquake_primary_location);
 
-        // Get the location offset string from the {@link Earthquake} getPlace method
-        // By starting the string at index 0, and ending it after the word "of" (i.e 38km SE of)
-        String locationOffsetString = currentEarthquake.getPlace().substring(0,
-                currentEarthquake.getPlace().indexOf("of") + 2);
-
-        // Get the primary location string by erasing the locationOffsetString from
-        // the {@link Earthquake} getPlace method string, so that it only shows a city or country
-        String primaryLocationString = currentEarthquake.getPlace().replace(locationOffsetString,
-                "").trim();
-
-        // Get the earthquake's primary location, and set it to the TextView
-        primaryLocation.setText(primaryLocationString);
+        //Create an empty string for the primary location
+        String primaryLocationString;
 
         // Check if earthquake's place starts with an number
         // that would mean that it provides the distance from a major city or country
         if (Character.isDigit(currentEarthquake.getPlace().charAt(0))) {
+
+            // Get the location offset string from the {@link Earthquake} getPlace method
+            // By starting the string at index 0, and ending it after the word "of" (i.e 38km SE of)
+            String locationOffsetString = currentEarthquake.getPlace().substring(0,
+                    currentEarthquake.getPlace().indexOf("of") + 2);
+
+            // Get the primary location string by erasing the locationOffsetString from
+            // the {@link Earthquake} getPlace method string, so that it only shows a city or country
+            primaryLocationString = currentEarthquake.getPlace().replace(locationOffsetString,
+                    "").trim();
 
             // set the earthquake's location offset, and set it to the location offset TextView
             locationOffset.setText(locationOffsetString);
@@ -102,7 +102,13 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
             // Set the location offset TextView text to "Near"
             locationOffset.setText("Near");
+
+            // Use the getPlace method to get the location, and set it to the primaryLocationString
+            primaryLocationString = currentEarthquake.getPlace();
         }
+
+        // Get the earthquake's primary location, and set it to the TextView
+        primaryLocation.setText(primaryLocationString);
 
 
         // Find the date of the eathquake TextView by it's ID earthquake_date
