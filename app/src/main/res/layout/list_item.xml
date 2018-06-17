@@ -8,13 +8,26 @@
 
     <TextView
         android:id="@+id/earthquake_mag"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:background="@drawable/magnitude_circle"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        tools:text="4.6" />
+
+    <TextView
+        android:id="@+id/earthquake_location_offset"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="4.6"/>
+        android:layout_marginLeft="16dp"
+        tools:text="Paris France" />
 
     <TextView
-        android:id="@+id/earthquake_place"
+        android:id="@+id/earthquake_primary_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -26,5 +39,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         tools:text="August 30th, 2017"/>
+
+    <TextView
+        android:id="@+id/earthquake_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="3:00pm" />
 
 </LinearLayout>
