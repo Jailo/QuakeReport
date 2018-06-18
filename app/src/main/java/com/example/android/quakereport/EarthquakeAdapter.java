@@ -1,16 +1,16 @@
 package com.example.android.quakereport;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +44,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         }
 
         // Get the {@link Earthquake} object located at this position in the list
-        Earthquake currentEarthquake = getItem(position);
+        final Earthquake currentEarthquake = getItem(position);
 
         // Create new Date object from  the current earthquakes time in milliseconds
         Date dateObject = new Date(currentEarthquake.getTimeInMilliseconds());
@@ -101,7 +101,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             // which means it only displays a major city or country
 
             // Set the location offset TextView text to "Near"
-            locationOffset.setText("Near");
+            locationOffset.setText(R.string.near);
 
             // Use the getPlace method to get the location, and set it to the primaryLocationString
             primaryLocationString = currentEarthquake.getPlace();
@@ -129,7 +129,6 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // Get the current earthquake's date, and add it to the TextView
         time.setText(formattedTime);
 
-
         // Return the whole list item layout so that it can be shown in the ListView
         return listItemView;
     }
@@ -151,6 +150,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
      */
     private int getMagnitudeColor(double magnitude) {
 
+        //Convert the magnitude which is a double, into an int
         int magnitudeFloor = (int) Math.floor(magnitude);
 
         int magnitudeColor;

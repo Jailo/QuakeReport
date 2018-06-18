@@ -11,17 +11,21 @@ public class Earthquake {
     /* Time of the earthquake */
     private Long mTimeInMilliseconds;
 
+    /* Url link to find more info about the earthquake */
+    private String mUrl;
 
     /**
      * Creates a new earthquake object
      * @param mag is the magnitude of the earthquake
      * @param place where the earthquake happened
      * @param timeInMilliseconds when the earthquake happened
+     * @param url the url that leads to more info about the earthquake
      */
-    public Earthquake(Double mag, String place, Long timeInMilliseconds) {
+    public Earthquake(Double mag, String place, Long timeInMilliseconds, String url) {
         mMag = mag;
         mPlace = place;
         mTimeInMilliseconds = timeInMilliseconds;
+        mUrl = url;
 
     }
 
@@ -48,5 +52,12 @@ public class Earthquake {
         return mTimeInMilliseconds;
     }
 
+
+    /**
+     * @return the url link to more info about the earthquake
+     */
+    public String getUrl() {
+        return mUrl;
+    }
 
 }
