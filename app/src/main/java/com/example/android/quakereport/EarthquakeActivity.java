@@ -16,8 +16,11 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -59,13 +62,6 @@ public class EarthquakeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Get reference to loader manager to interact with loaders
-        LoaderManager loaderManager = getLoaderManager();
-
-        // Initialize loader. Pass in the loader int id, null for the bundle, and this activity for
-        // the loader callbacks so that the data returned comes back here
-        loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this).forceLoad();
-
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
@@ -73,6 +69,36 @@ public class EarthquakeActivity extends AppCompatActivity
         mEmptyStateView = (TextView) findViewById(R.id.no_earthquakes);
         // Set the earthquakeListView's empty state view to mEmptyStateView
         earthquakeListView.setEmptyView(mEmptyStateView);
+
+        // Query the active network and determine if it has Internet connectivity.
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                getApplicationContext().getSystemService(CONNECTIVITY_SERVICE);
+
+        // Get details on the currently active default data network
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        // If users phone is connected to the internet
+        if (isConnected) {
+            // Get reference to loader manager to interact with loaders
+            LoaderManager loaderManager = getLoaderManager();
+
+            // Initialize loader. Pass in the loader int id, null for the bundle, and this activity for
+            // the loader callbacks so that the data returned comes back here
+            loaderManager.initLoader(EARTHQUAKE_LOADER_ID, null, this).forceLoad();
+        } else {
+            // If the user is NOT connected to the internet,
+            // set mEmptyStateView text to "No Internet Connection"
+            mEmptyStateView.setText(R.string.no_internet);
+
+            // Find resource for progress bar
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+            // and make it invisible
+            progressBar.setVisibility(View.GONE);
+
+        }
+
 
         // Create a new {@link EarthquakeArrayAdapter} that takes an empty list as input
         mAdapter = new EarthquakeAdapter(getBaseContext(), new ArrayList<Earthquake>());
@@ -101,6 +127,7 @@ public class EarthquakeActivity extends AppCompatActivity
         });
 
     }
+
 
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
