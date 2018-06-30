@@ -25,6 +25,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,12 @@ public class EarthquakeActivity extends AppCompatActivity
     /** Adapter for list of earthquakes*/
     private EarthquakeAdapter mAdapter;
 
+    /**
+     * Text view that is displayed if there are no earthquakes to display
+     */
+    private TextView mEmptyStateView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +68,11 @@ public class EarthquakeActivity extends AppCompatActivity
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+        // Find reference to the no earthquakes text view in the layout
+        mEmptyStateView = (TextView) findViewById(R.id.no_earthquakes);
+        // Set the earthquakeListView's empty state view to mEmptyStateView
+        earthquakeListView.setEmptyView(mEmptyStateView);
 
         // Create a new {@link EarthquakeArrayAdapter} that takes an empty list as input
         mAdapter = new EarthquakeAdapter(getBaseContext(), new ArrayList<Earthquake>());
@@ -98,10 +112,17 @@ public class EarthquakeActivity extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
 
+        // Find resource for, and hide progress bar
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
+
         // Clear the adapter of previous earthquake data
         mAdapter.clear();
 
-        // IF there is a valid list of {@link Earthquake}s,  add all data to the adapter.
+        //set mEmptyStateView text to "No Earthquakes Found"
+        mEmptyStateView.setText(R.string.no_earthquakes);
+
+        // If there is a valid list of {@link Earthquake}s, add all data to the adapter.
         // This will cause the ListView to update
         if (earthquakes != null && !earthquakes.isEmpty()) {
             mAdapter.addAll(earthquakes);

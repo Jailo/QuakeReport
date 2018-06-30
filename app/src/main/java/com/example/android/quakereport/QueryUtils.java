@@ -38,7 +38,8 @@ public final class QueryUtils {
     private QueryUtils() {
     }
 
-    public static List<Earthquake> fetchEarthquakeData(String requestUrl) {
+    public static List<Earthquake> fetchEarthquakeData(String requestUrl){
+
         // Create new URL object
         URL url = createUrl(requestUrl);
 
@@ -48,7 +49,7 @@ public final class QueryUtils {
         // Perform HTTP request and get JSON response back
         try {
             jsonResponse = makeHttpRequest(url);
-        } catch (IOException e) {
+        } catch (IOException e){
             Log.e(LOG_TAG, "Error making HTTP request: " + e);
         }
 
@@ -66,7 +67,7 @@ public final class QueryUtils {
     private static List<Earthquake> extractFeatureFromJson(String earthquakeJSON) {
 
         //if JSON response is empty or null, return early
-        if (TextUtils.isEmpty(earthquakeJSON)) {
+        if (TextUtils.isEmpty(earthquakeJSON)){
             return null;
         }
 
@@ -133,13 +134,13 @@ public final class QueryUtils {
     /**
      * Create a URL object from the given string URL
      */
-    private static URL createUrl(String stringUrl) {
+    private static URL createUrl(String stringUrl){
 
         URL url = null;
 
         try {
             url = new URL(stringUrl);
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException e){
             Log.e(LOG_TAG, "Error creating URL: ", e);
         }
 
@@ -149,11 +150,11 @@ public final class QueryUtils {
     /**
      * Make an HTTP Request to the given URL and return the response as a String
      */
-    private static String makeHttpRequest(URL url) throws IOException {
+    private static String makeHttpRequest(URL url) throws IOException{
         String jsonResponse = "";
 
         //If url is null return early
-        if (url == null) {
+        if (url == null){
             return jsonResponse;
         }
 
@@ -177,7 +178,7 @@ public final class QueryUtils {
                 Log.e(LOG_TAG, "Error Response code is: " + urlConnection.getResponseCode());
             }
 
-        } catch (IOException e) {
+        } catch (IOException e){
             Log.e(LOG_TAG, "Error creating HTTP Request: ", e);
         } finally {
             if (urlConnection != null) {
