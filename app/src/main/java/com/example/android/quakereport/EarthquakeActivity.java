@@ -42,7 +42,7 @@ public class EarthquakeActivity extends AppCompatActivity
     /**
      * Url for earthquake data from USGS dataset
      */
-    private static final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=5&limit=10";
+    private static final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3.5&limit=10";
     /** Constant value for Loader ID
      * Assigning Explicit ID integers only comes into play when there are multiple Loaders
      * on the same Activity. So doing this is redundant, but it was on the course so I'll do it anyway
@@ -80,7 +80,7 @@ public class EarthquakeActivity extends AppCompatActivity
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
         // If users phone is connected to the internet
-        if (isConnected) {
+        if (isConnected){
             // Get reference to loader manager to interact with loaders
             LoaderManager loaderManager = getLoaderManager();
 
