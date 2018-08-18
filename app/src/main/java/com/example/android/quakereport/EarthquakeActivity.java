@@ -19,10 +19,13 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +36,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +48,8 @@ public class EarthquakeActivity extends AppCompatActivity
     /**
      * Url for earthquake data from USGS dataset
      */
-    private static final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&orderby=time&minmag=3.5&limit=10";
+    private static final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query";
+
     /** Constant value for Loader ID
      * Assigning Explicit ID integers only comes into play when there are multiple Loaders
      * on the same Activity. So doing this is redundant, but it was on the course so I'll do it anyway
@@ -133,8 +138,41 @@ public class EarthquakeActivity extends AppCompatActivity
 
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int id, Bundle args) {
+
+        // Get shared preferences
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Create a minimum magnitude string by getting the key and value from the shared preferences
+        String minMagnitude = sharedPreferences.getString(
+                getString(R.string.settings_min_magnitude_key),
+                getString(R.string.settings_min_magnitude_default));
+
+        // create an order by string that holds the selected order by preference option
+        String orderBy = sharedPreferences.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
+
+        // create an maximum results string that holds the maximum result preference option
+        String maxResults = sharedPreferences.getString(
+                getString(R.string.settings_max_results_key),
+                getString(R.string.settings_max_results_default));
+
+        // create a base uri in order to parse through the basic USGS_URL queury string
+        Uri baseUri = Uri.parse(USGS_URL);
+
+        // Create a uri builder to add query parameter strings onto the base uri
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        // Add the following search params onto uri builder
+        // format to geojson, list item limit is maxResults, minimum magnitude to minMagnitude string,
+        // and order by orderBy preference string
+        uriBuilder.appendQueryParameter("format", "geojson");
+        uriBuilder.appendQueryParameter("limit", maxResults);
+        uriBuilder.appendQueryParameter("minmag", minMagnitude);
+        uriBuilder.appendQueryParameter("orderby", orderBy);
+
         // Create new loader for the given URL
-        return new EarthquakeLoader(this, USGS_URL);
+        return new EarthquakeLoader(this, uriBuilder.toString());
     }
 
 
