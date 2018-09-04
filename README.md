@@ -1,6 +1,8 @@
 Quake Report App
 ===================================
 
+![](https://im4.ezgif.com/tmp/ezgif-4-bb2fd77d98.gif)
+
 This app displays a list of recent earthquakes in the world
 from the U.S. Geological Survey (USGS) organization.
 
